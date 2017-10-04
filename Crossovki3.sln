@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26730.8
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Crossovki3", "Crossovki3\Crossovki3.csproj", "{16D71294-5DC7-4B95-9F90-44EDD189183A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{16D71294-5DC7-4B95-9F90-44EDD189183A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{16D71294-5DC7-4B95-9F90-44EDD189183A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{16D71294-5DC7-4B95-9F90-44EDD189183A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{16D71294-5DC7-4B95-9F90-44EDD189183A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {48CA1E1C-0140-4D8C-9548-1E881206F2D8}
+	EndGlobalSection
+EndGlobal
