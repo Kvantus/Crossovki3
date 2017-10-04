@@ -1,0 +1,123 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Хранилище Data_BaseModel_Crossovki" Provider="System.Data.SqlClient" ProviderManifestToken="2005" Alias="Self" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <Function Name="f_REPORT_Mega_Base_Get_Catalogue" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" StoreFunctionName="_REPORT_Mega_Base_Get_Catalogue">
+          <Parameter Name="maker" Type="char" Mode="In" />
+          <Parameter Name="supplier_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="f_REPORT_Mega_Base_Unrecognized_" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" StoreFunctionName="_REPORT_Mega_Base_Unrecognized_">
+          <Parameter Name="supplier_id" Type="int" Mode="In" />
+        </Function>
+        <EntityContainer Name="Хранилище Data_BaseModel_CrossovkiContainer" />
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Data_BaseModel_Crossovki" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="Data_BaseEntities_Unrecognized" annotation:LazyLoadingEnabled="true" >
+          <FunctionImport Name="f_REPORT_Mega_Base_Get_Catalogue" ReturnType="Collection(Data_BaseModel_Crossovki.f_REPORT_Mega_Base_Get_Catalogue_Result)">
+            <Parameter Name="maker" Mode="In" Type="String" />
+            <Parameter Name="supplier_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="f_REPORT_Mega_Base_Unrecognized_" ReturnType="Collection(Data_BaseModel_Crossovki.f_REPORT_Mega_Base_Unrecognized__Result)">
+            <Parameter Name="supplier_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+        </EntityContainer>
+        <ComplexType Name="f_REPORT_Mega_Base_Get_Catalogue_Result">
+          <Property Type="String" Name="maker" Nullable="true" MaxLength="70" />
+          <Property Type="String" Name="code" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="original_code" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="name" Nullable="true" MaxLength="200" />
+          <Property Type="Int32" Name="krosses_to_count" Nullable="true" />
+          <Property Type="Int32" Name="krosses_from_count" Nullable="true" />
+          <Property Type="String" Name="In_1C" Nullable="false" MaxLength="4" />
+          <Property Type="Int32" Name="offers_cnt" Nullable="true" />
+          <Property Type="Int32" Name="available_amount" Nullable="true" />
+          <Property Type="String" Name="owner" Nullable="true" MaxLength="48" />
+          <Property Type="DateTime" Name="date_time" Nullable="false" Precision="23" />
+          <Property Type="Boolean" Name="is_truck" Nullable="false" />
+          <Property Type="Byte" Name="type" Nullable="false" />
+          <Property Type="Double" Name="mass" Nullable="false" />
+          <Property Type="Double" Name="volume" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="f_REPORT_Mega_Base_Unrecognized__Result">
+          <Property Type="String" Name="Supplier" Nullable="true" MaxLength="100" />
+          <Property Type="Boolean" Name="OEM" Nullable="true" />
+          <Property Type="String" Name="Производитель" Nullable="true" MaxLength="70" />
+          <Property Type="String" Name="Номер_Производителя" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="Оригинальный_Номер" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="Название" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="Единица" Nullable="true" MaxLength="10" />
+          <Property Type="Double" Name="Цена_По_Прайсу" Nullable="true" />
+          <Property Type="String" Name="Наличие" Nullable="true" MaxLength="9" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище Data_BaseModel_CrossovkiContainer" CdmEntityContainer="Data_BaseEntities_Unrecognized" >
+          <FunctionImportMapping FunctionImportName="f_REPORT_Mega_Base_Get_Catalogue" FunctionName="Хранилище Data_BaseModel_Crossovki.f_REPORT_Mega_Base_Get_Catalogue">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Data_BaseModel_Crossovki.f_REPORT_Mega_Base_Get_Catalogue_Result">
+                <ScalarProperty Name="maker" ColumnName="maker" />
+                <ScalarProperty Name="code" ColumnName="code" />
+                <ScalarProperty Name="original_code" ColumnName="original_code" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="krosses_to_count" ColumnName="krosses_to_count" />
+                <ScalarProperty Name="krosses_from_count" ColumnName="krosses_from_count" />
+                <ScalarProperty Name="In_1C" ColumnName="In_1C" />
+                <ScalarProperty Name="offers_cnt" ColumnName="offers_cnt" />
+                <ScalarProperty Name="available_amount" ColumnName="available_amount" />
+                <ScalarProperty Name="owner" ColumnName="owner" />
+                <ScalarProperty Name="date_time" ColumnName="date_time" />
+                <ScalarProperty Name="is_truck" ColumnName="is_truck" />
+                <ScalarProperty Name="type" ColumnName="type" />
+                <ScalarProperty Name="mass" ColumnName="mass" />
+                <ScalarProperty Name="volume" ColumnName="volume" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="f_REPORT_Mega_Base_Unrecognized_" FunctionName="Хранилище Data_BaseModel_Crossovki.f_REPORT_Mega_Base_Unrecognized_">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Data_BaseModel_Crossovki.f_REPORT_Mega_Base_Unrecognized__Result">
+                <ScalarProperty Name="Supplier" ColumnName="Supplier" />
+                <ScalarProperty Name="OEM" ColumnName="OEM" />
+                <ScalarProperty Name="Производитель" ColumnName="Производитель" />
+                <ScalarProperty Name="Номер_Производителя" ColumnName="Номер_Производителя" />
+                <ScalarProperty Name="Оригинальный_Номер" ColumnName="Оригинальный_Номер" />
+                <ScalarProperty Name="Название" ColumnName="Название" />
+                <ScalarProperty Name="Единица" ColumnName="Единица" />
+                <ScalarProperty Name="Цена_По_Прайсу" ColumnName="Цена_По_Прайсу" />
+                <ScalarProperty Name="Наличие" ColumnName="Наличие" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
