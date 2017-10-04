@@ -6,6 +6,8 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+//using Microsoft.Office.Interop.Excel;
+//using Excel = Microsoft.Office.Interop.Excel;
 
 namespace Crossovki3
 {
@@ -23,7 +25,7 @@ namespace Crossovki3
         private void BRefresh_Click(object sender, EventArgs e)
         {
             LabelMain.Text = "Подключение к базе...";
-            Application.DoEvents();
+            System.Windows.Forms.Application.DoEvents();
             var myQuery = from items in content.f_REPORT_Mega_Base_Unrecognized_(null)
                           select items;
             MyList = myQuery.ToList();
@@ -90,6 +92,26 @@ namespace Crossovki3
         {
             FormSymbols formSymbols = new FormSymbols(this);
             formSymbols.Show();
+        }
+
+        private void BTestik_Click(object sender, EventArgs e)
+        {
+            //var excel = new Excel.Application();
+            //try
+            //{
+            //    excel = System.Runtime.InteropServices.Marshal.GetActiveObject("Excel.Application")
+            //            as Excel.Application;
+            //}
+            //catch (Exception)
+            //{
+            //    excel = new Excel.Application();
+            //    excel.Visible = true;
+            //}
+
+            //Workbook myBook = excel.Workbooks.Add();
+            //Worksheet mySheet = myBook.Worksheets[1];
+
+            //mySheet.Cells[1, 1].Value = MyFilteredList[1].Название;
         }
     }
 }

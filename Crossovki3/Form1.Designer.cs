@@ -35,6 +35,7 @@
             this.LabelMain = new System.Windows.Forms.Label();
             this.BRefresh = new System.Windows.Forms.Button();
             this.DGTable = new System.Windows.Forms.DataGridView();
+            this.BTestik = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.DGTable)).BeginInit();
             this.SuspendLayout();
             // 
@@ -113,11 +114,23 @@
             this.DGTable.Size = new System.Drawing.Size(990, 550);
             this.DGTable.TabIndex = 7;
             // 
+            // BTestik
+            // 
+            this.BTestik.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.BTestik.Location = new System.Drawing.Point(1019, 204);
+            this.BTestik.Name = "BTestik";
+            this.BTestik.Size = new System.Drawing.Size(256, 41);
+            this.BTestik.TabIndex = 14;
+            this.BTestik.Text = "ТЕСТ";
+            this.BTestik.UseVisualStyleBackColor = true;
+            this.BTestik.Click += new System.EventHandler(this.BTestik_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1328, 600);
+            this.Controls.Add(this.BTestik);
             this.Controls.Add(this.BSymbolsForm);
             this.Controls.Add(this.BChooseBrand);
             this.Controls.Add(this.ComboBrands);
@@ -142,6 +155,7 @@
         private System.Windows.Forms.Label LabelMain;
         private System.Windows.Forms.Button BRefresh;
         public System.Windows.Forms.DataGridView DGTable;
+        private System.Windows.Forms.Button BTestik;
     }
 }
 
