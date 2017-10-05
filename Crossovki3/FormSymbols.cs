@@ -58,11 +58,9 @@ namespace Crossovki3
             if (BQuotes.BackColor == Color.LawnGreen)
                 quotes = "\"";
 
-            MainForm.MyUnrecTable = new List<UnrecRows>();
-
             foreach (var row in MainForm.MyFilteredList)
             {
-                string numberNice = row.Номер_Производителя
+                string numberNice = row.NumberBad
                     .Replace(point, "")
                     .Replace(semicolon, "")
                     .Replace(space, "")
@@ -71,19 +69,10 @@ namespace Crossovki3
                     .Replace(slash, "")
                     .Replace(backslash, "")
                     .Replace(quotes, "");
-                MainForm.MyUnrecTable.Add(new UnrecRows
-                {
-                    Supplier = row.Supplier,
-                    Brand = row.Производитель,
-                    NumberNice = numberNice,
-                    NumberBad = row.Номер_Производителя,
-                    PartName = row.Название
-                });
+                row.NumberNice = numberNice;
             }
 
-            MainForm.DGVSourse = MainForm.MyUnrecTable;
-
-            MainForm.MyFilteredList = null;
+            MainForm.DGTable.Refresh();
 
             //List<string> coloredList = new List<string>();
 
