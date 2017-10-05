@@ -21,6 +21,7 @@ namespace Crossovki3
         public List<f_REPORT_Mega_Base_Unrecognized__Result> MyFilteredList { get; set; }
         public List<UnrecRows> MyUnrecTable { get; set; }
         public List<TecDocRows> MyTecDocTable { get; set; }
+        public object DGVSourse { get { return DGTable.DataSource; } set { DGTable.DataSource = value; } }
 
         public Form1()
         {
@@ -31,6 +32,9 @@ namespace Crossovki3
         {
             LabelMain.Text = "Подключение к базе...";
             System.Windows.Forms.Application.DoEvents();
+            
+
+
             var myQuery = from items in content.f_REPORT_Mega_Base_Unrecognized_(null)
                           select items;
             MyList = myQuery.ToList();
@@ -47,7 +51,7 @@ namespace Crossovki3
                     row.Название = Encoding.UTF8.GetString(tempBytes);
                 }
             }
-
+            
             DGTable.DataSource = MyList;
 
             LAbelCount.Text = "Итого: " + DGTable.RowCount;
@@ -101,7 +105,7 @@ namespace Crossovki3
         private void BTestik_Click(object sender, EventArgs e)
         {
             string timeNow = DateTime.Now.ToString().Replace(":", "-").Replace(".", "_");
-            string fileName = @"\\server\out\Отдел Развития\Виктор\Unrec" + ComboBrands.SelectedItem + timeNow + ".xlsx";
+            string fileName = @"\\server\out\Отдел Развития\Виктор\" + ComboBrands.SelectedItem + " " + timeNow + ".xlsx";
             ExcelPackage eP = new ExcelPackage();
             ExcelWorkbook book = eP.Workbook;
             ExcelWorksheet sheet = book.Worksheets.Add("Лист1");
@@ -110,35 +114,52 @@ namespace Crossovki3
             // todo создать алгоритм для проверки: если есть 2+ безтирешных повторяющихся номера, то удалить строчку либо с пустым названием,
             // todo либо где безтирешный номер = тирешному
 
+            sheet.Column(1).Width = 26;
+            sheet.Column(2).Width = 19;
+            sheet.Column(3).Width = 29;
+            sheet.Column(4).Width = 29;
+            sheet.Column(5).Width = 110;
 
+            sheet.Cells[1, 1].Value = "Supplier";
+            sheet.Cells[1, 2].Value = "Brand";
+            sheet.Cells[1, 3].Value = "NumberNice";
+            sheet.Cells[1, 4].Value = "NumberBad";
+            sheet.Cells[1, 5].Value = "PartName";
 
-            for (int i = 1; i <= MyFilteredList.Count; i++)
+            for (int i = 2; i <= MyUnrecTable.Count; i++)
             {
-                sheet.Cells[i, 1].Value = MyFilteredList[i-1].Supplier.ToString();
-                sheet.Cells[i, 2].Value = MyFilteredList[i - 1].Производитель.ToString();
-                sheet.Cells[i, 4].Value = MyFilteredList[i - 1].Название.ToString();
+                sheet.Cells[i, 1].Value = MyUnrecTable[i-1].Supplier;
+                sheet.Cells[i, 2].Value = MyUnrecTable[i - 1].Brand;
+                sheet.Cells[i, 3].Value = MyUnrecTable[i - 1].NumberNice;
+                sheet.Cells[i, 4].Value = MyUnrecTable[i - 1].NumberBad;
+                sheet.Cells[i, 5].Value = MyUnrecTable[i - 1].PartName;
 
             }
-
-
+            
 
             byte[] excelBytes = eP.GetAsByteArray();
             File.WriteAllBytes(fileName, excelBytes);
 
-            //var excel = new Excel.Application();
-            //try
-            //{
-            //    excel = System.Runtime.InteropServices.Marshal.GetActiveObject("Excel.Application")
-            //            as Excel.Application;
-            //}
-            //catch (Exception)
-            //{
-            //    excel = new Excel.Application();
-            //    excel.Visible = true;
-            //}
-            //Workbook myBook = excel.Workbooks.Add();
-            //Worksheet mySheet = myBook.Worksheets[1];
-            //mySheet.Cells[1, 1].Value = MyFilteredList[1].Название;
+            var excel = new Excel.Application();
+            try
+            {
+                excel = System.Runtime.InteropServices.Marshal.GetActiveObject("Excel.Application")
+                        as Excel.Application;
+            }
+            catch (Exception)
+            {
+                excel = new Excel.Application();
+                excel.Visible = true;
+            }
+            Workbook myBook = excel.Workbooks.Open(fileName);
+            Worksheet mySheet = myBook.Worksheets[1];
+            Range myRange = mySheet.Range["C1"].EntireColumn;
+            myRange.FormatConditions.AddUniqueValues();
+            myRange.FormatConditions[myRange.FormatConditions.Count].SetFirstPriority();
+            myRange.FormatConditions[1].DupeUnique = XlDupeUnique.xlDuplicate;
+            myRange.FormatConditions[1].Font.Color = -16752384;
+            myRange.FormatConditions[1].Interior.Color = 13561798;
+            mySheet.Columns["A:E"].AutoFilter();
         }
     }
 }

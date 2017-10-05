@@ -58,10 +58,11 @@ namespace Crossovki3
             if (BQuotes.BackColor == Color.LawnGreen)
                 quotes = "\"";
 
+            MainForm.MyUnrecTable = new List<UnrecRows>();
 
             foreach (var row in MainForm.MyFilteredList)
             {
-                row.Номер_Производителя = row.Номер_Производителя
+                string numberNice = row.Номер_Производителя
                     .Replace(point, "")
                     .Replace(semicolon, "")
                     .Replace(space, "")
@@ -70,29 +71,39 @@ namespace Crossovki3
                     .Replace(slash, "")
                     .Replace(backslash, "")
                     .Replace(quotes, "");
-            }
-
-
-            List<string> coloredList = new List<string>();
-
-            for (int i = 0; i < MainForm.DGTable.RowCount; i++)
-            {
-                coloredList.Add(MainForm.DGTable.Rows[i].Cells[3].Value.ToString());
-            }
-
-            foreach (var article in coloredList.Distinct())
-            {
-                if (coloredList.Where(x => x == article).Count() > 1)
+                MainForm.MyUnrecTable.Add(new UnrecRows
                 {
-                    for (int i = 0; i < MainForm.DGTable.RowCount; i++)
-                    {
-                        if (MainForm.DGTable[3, i].Value.ToString() == article)
-                            MainForm.DGTable.Rows[i].DefaultCellStyle.BackColor = Color.LightPink;
-                    }
-                }
+                    Supplier = row.Supplier,
+                    Brand = row.Производитель,
+                    NumberNice = numberNice,
+                    NumberBad = row.Номер_Производителя,
+                    PartName = row.Название
+                });
             }
 
-            MainForm.DGTable.Refresh();
+            MainForm.DGVSourse = MainForm.MyUnrecTable;
+
+            MainForm.MyFilteredList = null;
+
+            //List<string> coloredList = new List<string>();
+
+            //for (int i = 0; i < MainForm.DGTable.RowCount; i++)
+            //{
+            //    coloredList.Add(MainForm.DGTable.Rows[i].Cells[3].Value.ToString());
+            //}
+
+            //foreach (var article in coloredList.Distinct())
+            //{
+            //    if (coloredList.Where(x => x == article).Count() > 1)
+            //    {
+            //        for (int i = 0; i < MainForm.DGTable.RowCount; i++)
+            //        {
+            //            if (MainForm.DGTable[3, i].Value.ToString() == article)
+            //                MainForm.DGTable.Rows[i].DefaultCellStyle.BackColor = Color.LightPink;
+            //        }
+            //    }
+            //}
+
             this.Close();
 
         }
