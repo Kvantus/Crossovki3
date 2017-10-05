@@ -73,12 +73,6 @@ namespace Crossovki3
             }
 
 
-            //sortedList.DataSource = MainForm.MyFilteredList;
-            //DataGridViewColumn column = MainForm.DGTable.Columns[3];
-            //MainForm.DGTable.Sort(column, ListSortDirection.Ascending);
-
-            //Dictionary<string, int> dicArticles = new Dictionary<string, int>();
-
             List<string> coloredList = new List<string>();
 
             for (int i = 0; i < MainForm.DGTable.RowCount; i++)
@@ -93,7 +87,7 @@ namespace Crossovki3
                     for (int i = 0; i < MainForm.DGTable.RowCount; i++)
                     {
                         if (MainForm.DGTable[3, i].Value.ToString() == article)
-                            MainForm.DGTable.Rows[i].DefaultCellStyle.BackColor = Color.Red;
+                            MainForm.DGTable.Rows[i].DefaultCellStyle.BackColor = Color.LightPink;
                     }
                 }
             }

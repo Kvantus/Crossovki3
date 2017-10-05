@@ -8,6 +8,9 @@ using System.Text;
 using System.Windows.Forms;
 using Microsoft.Office.Interop.Excel;
 using Excel = Microsoft.Office.Interop.Excel;
+using OfficeOpenXml;
+using OfficeOpenXml.Style;
+using System.IO;
 
 namespace Crossovki3
 {
@@ -84,8 +87,6 @@ namespace Crossovki3
 
             LAbelCount.Text = "Итого: " + DGTable.RowCount;
 
-            //DGTable.Rows[1].Cells[3].Style.BackColor = Color.GreenYellow;
-
         }
 
         private void BSymbolsForm_Click(object sender, EventArgs e)
@@ -96,22 +97,39 @@ namespace Crossovki3
 
         private void BTestik_Click(object sender, EventArgs e)
         {
-            var excel = new Excel.Application();
-            try
+            string timeNow = DateTime.Now.ToString().Replace(":", "-").Replace(".", "_");
+            string fileName = @"\\server\out\Отдел Развития\Виктор\Unrec" + ComboBrands.SelectedItem + timeNow + ".xlsx";
+            ExcelPackage eP = new ExcelPackage();
+            ExcelWorkbook book = eP.Workbook;
+            ExcelWorksheet sheet = book.Worksheets.Add("Лист1");
+
+            // создать доп коллекцию с тирешными (или безтирешными) номерами
+            // создать алгоритм для проверки: если есть 2+ безтирешных повторяющихся номера, то удалить строчку либо с пустым названием,
+            // либо где безтирешный номер = тирешному
+            for (int i = 1; i <= MyFilteredList.Count; i++)
             {
-                excel = System.Runtime.InteropServices.Marshal.GetActiveObject("Excel.Application")
-                        as Excel.Application;
-            }
-            catch (Exception)
-            {
-                excel = new Excel.Application();
-                excel.Visible = true;
+                sheet.Cells[i, 1].Value = MyFilteredList[i-1].Supplier.ToString();
+                sheet.Cells[i, 2].Value = MyFilteredList[i - 1].Производитель.ToString();
+                sheet.Cells[i, 4].Value = MyFilteredList[i - 1].Название.ToString();
+
             }
 
 
 
+            byte[] excelBytes = eP.GetAsByteArray();
+            File.WriteAllBytes(fileName, excelBytes);
 
-
+            //var excel = new Excel.Application();
+            //try
+            //{
+            //    excel = System.Runtime.InteropServices.Marshal.GetActiveObject("Excel.Application")
+            //            as Excel.Application;
+            //}
+            //catch (Exception)
+            //{
+            //    excel = new Excel.Application();
+            //    excel.Visible = true;
+            //}
             //Workbook myBook = excel.Workbooks.Add();
             //Worksheet mySheet = myBook.Worksheets[1];
             //mySheet.Cells[1, 1].Value = MyFilteredList[1].Название;
