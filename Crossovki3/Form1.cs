@@ -19,6 +19,8 @@ namespace Crossovki3
         Data_BaseEntities_Unrecognized content = new Data_BaseEntities_Unrecognized();
         public List<f_REPORT_Mega_Base_Unrecognized__Result> MyList { get; set; }
         public List<f_REPORT_Mega_Base_Unrecognized__Result> MyFilteredList { get; set; }
+        public List<UnrecRows> MyUnrecTable { get; set; }
+        public List<TecDocRows> MyTecDocTable { get; set; }
 
         public Form1()
         {
@@ -34,6 +36,7 @@ namespace Crossovki3
             MyList = myQuery.ToList();
             foreach (var row in MyList)
             {
+
                 if (row.Supplier == "АвтоСпутник_1-2" ||
                     row.Supplier == "АвтоСпутник_1-3" ||
                     row.Supplier == "Ренисcанс" ||
@@ -103,9 +106,12 @@ namespace Crossovki3
             ExcelWorkbook book = eP.Workbook;
             ExcelWorksheet sheet = book.Worksheets.Add("Лист1");
 
-            // создать доп коллекцию с тирешными (или безтирешными) номерами
-            // создать алгоритм для проверки: если есть 2+ безтирешных повторяющихся номера, то удалить строчку либо с пустым названием,
-            // либо где безтирешный номер = тирешному
+            // todo создать доп коллекцию с тирешными (или безтирешными) номерами
+            // todo создать алгоритм для проверки: если есть 2+ безтирешных повторяющихся номера, то удалить строчку либо с пустым названием,
+            // todo либо где безтирешный номер = тирешному
+
+
+
             for (int i = 1; i <= MyFilteredList.Count; i++)
             {
                 sheet.Cells[i, 1].Value = MyFilteredList[i-1].Supplier.ToString();

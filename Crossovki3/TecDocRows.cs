@@ -5,12 +5,13 @@ using System.Text;
 
 namespace Crossovki3
 {
-    public class UnrecRows
+    public class TecDocRows
     {
-        public string Supplier { get; set; }
         public string Brand { get; set; }
         public string NumberNice { get; set; }
         public string NumberBad { get; set; }
+        public string OEMBrand { get; set; }
+        public string OEMNumber { get; set; }
         public string PartName { get; set; }
     }
 }
