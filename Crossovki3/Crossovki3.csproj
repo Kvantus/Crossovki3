@@ -97,6 +97,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ResultTable.cs" />
     <Compile Include="TecDocRows.cs" />
     <Compile Include="UnrecRows.cs" />
     <EmbeddedResource Include="Form1.resx">

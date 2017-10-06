@@ -13,6 +13,14 @@ namespace Crossovki3
     {
 
         Form1 MainForm { get; set; }
+        string point = "";
+        string semicolon = "";
+        string space = "";
+        string dash = "";
+        string underline = "";
+        string slash = "";
+        string backslash = "";
+        string quotes = "";
 
         public FormSymbols(Form1 mainForm)
         {
@@ -32,15 +40,6 @@ namespace Crossovki3
 
         private void BDelSymbols_Click(object sender, EventArgs e)
         {
-            string point = "";
-            string semicolon = "";
-            string space = "";
-            string dash = "";
-            string underline = "";
-            string slash = "";
-            string backslash = "";
-            string quotes = "";
-
             if (BPoint.BackColor == Color.LawnGreen)
                 point = ".";
             if (BSemicolon.BackColor == Color.LawnGreen)
@@ -72,8 +71,16 @@ namespace Crossovki3
                 row.NumberNice = numberNice;
             }
 
-            MainForm.DGTable.Refresh();
+            MainForm.DGVRefresh();
 
+            SharedVariables.Point = point;
+            SharedVariables.Semicolon = semicolon;
+            SharedVariables.Space = space;
+            SharedVariables.Dash = dash;
+            SharedVariables.Underline = underline;
+            SharedVariables.Slash = slash;
+            SharedVariables.Backslash = backslash;
+            SharedVariables.Quotes = quotes;
 
             // окрашивание повторяющихся - не нужно
             //List<string> coloredList = new List<string>();

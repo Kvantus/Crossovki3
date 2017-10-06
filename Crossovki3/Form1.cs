@@ -20,14 +20,22 @@ namespace Crossovki3
         Data_BaseEntities_Unrecognized content = new Data_BaseEntities_Unrecognized();
         public List<UnrecRows> MyList { get; set; }
         public List<UnrecRows> MyFilteredList { get; set; }
-        public List<TecDocRows> MyTecDocTable { get; set; }
         public object DGVSourse { get { return DGTable.DataSource; } set { DGTable.DataSource = value; } }
         public string myDesktop = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-        public string WorkingDirectory;
+        public DirectoryInfo WorkingDirectory;
+
+        public string MyUnrecFile { get; set; }
+        public string MyTecDocFile { get; set; }
+        public List<TecDocRows> MyTecDocTable { get; set; }
 
         public Form1()
         {
             InitializeComponent();
+        }
+
+        public void DGVRefresh()
+        {
+            DGTable.Refresh();
         }
 
         private void BRefresh_Click(object sender, EventArgs e)
@@ -63,53 +71,52 @@ namespace Crossovki3
         private void ConnectToDataBase(string user)
         {
             MyList = new List<UnrecRows>();
-            if (user.ToUpper() == "KAZAKOV_K")
+            //if (user.ToUpper() == "KAZAKOV_K1")
+            //{
+            //    SqlConnection KirillConnection = new SqlConnection();
+            //    string connectionString = @"Data Source=master; DataBase=Data_Base; Integrated Security=True";
+            //    KirillConnection.ConnectionString = connectionString;
+            //    KirillConnection.Open();
+            //    SqlCommand unrecCommand = new SqlCommand($"exec [dbo].[_REPORT_Mega_Base_Unrecognized_]", KirillConnection);
+            //    SqlDataReader readerUnrec = unrecCommand.ExecuteReader();
+            //    while (readerUnrec.Read())
+            //    {
+            //        string partName = readerUnrec["Название"].ToString();
+            //        string sup = readerUnrec["Supplier"].ToString();
+
+            //        partName = RecievePartName(partName, sup);
+
+            //        MyList.Add(new UnrecRows
+            //        {
+            //            Supplier = readerUnrec["Supplier"].ToString(),
+            //            Brand = readerUnrec["Производитель"].ToString(),
+            //            NumberBad = readerUnrec["Номер_Производителя"].ToString(),
+            //            PartName = partName,
+
+            //        });
+            //    }
+            //}
+            //else
+            //{
+            var myQuery = from items in content.f_REPORT_Mega_Base_Unrecognized_(null)
+                          select items;
+            var tempList = myQuery.ToList();
+
+            foreach (var row in tempList)
             {
-                SqlConnection KirillConnection = new SqlConnection();
-                string connectionString = @"Data Source=master; DataBase=Data_Base; Integrated Security=True";
-                KirillConnection.ConnectionString = connectionString;
-                KirillConnection.Open();
-                SqlCommand unrecCommand = new SqlCommand($"exec [dbo].[_REPORT_Mega_Base_Unrecognized_]", KirillConnection);
-                SqlDataReader readerUnrec = unrecCommand.ExecuteReader();
-                while (readerUnrec.Read())
+                string partName = row.Название;
+                string sup = row.Supplier;
+
+                partName = RecievePartName(partName, sup);
+                MyList.Add(new UnrecRows
                 {
-                    string partName = readerUnrec["Название"].ToString();
-                    string sup = readerUnrec["Supplier"].ToString();
-
-                    partName = RecievePartName(partName, sup);
-
-                    MyList.Add(new UnrecRows
-                    {
-                        Supplier = readerUnrec["Supplier"].ToString(),
-                        Brand = readerUnrec["Производитель"].ToString(),
-                        NumberBad = readerUnrec["Номер_Производителя"].ToString(),
-                        PartName = partName,
-
-                    });
-                }
+                    Supplier = row.Supplier,
+                    Brand = row.Производитель,
+                    NumberBad = row.Номер_Производителя,
+                    PartName = partName
+                });
             }
-            else
-            {
-                var myQuery = from items in content.f_REPORT_Mega_Base_Unrecognized_(null)
-                              select items;
-                var tempList = myQuery.ToList();
-
-                foreach (var row in tempList)
-                {
-                    string partName = row.Название;
-                    string sup = row.Supplier;
-
-                    partName = RecievePartName(partName, sup);
-                    MyList.Add(new UnrecRows
-                    {
-                        Supplier = row.Supplier,
-                        Brand = row.Производитель,
-                        NumberBad = row.Номер_Производителя,
-                        PartName = partName
-                    });
-
-                }
-            }
+            //}
 
 
         }
@@ -162,10 +169,12 @@ namespace Crossovki3
         private void BGoExcel_Click(object sender, EventArgs e)
         {
             string timeNow = DateTime.Now.ToString().Replace(":", "-").Replace(".", "_");
-            string fileName = myDesktop + "\\" + ComboBrands.SelectedItem + " " + timeNow + ".xlsx";
+            WorkingDirectory = new DirectoryInfo($"{myDesktop}\\MegringCrosses");
+            WorkingDirectory.Create();
+            string fileName = WorkingDirectory + "\\" + ComboBrands.SelectedItem + " " + timeNow + ".xlsx";
 
             // присваиваем статической переменной имя созданного файла и отображаем его в LabelCurrentUnrec
-            MergingClass.MyUnrecFile = fileName;
+            MyUnrecFile = fileName;
             LabelCurrentUnrec.Text = fileName;
 
             ExcelPackage eP = new ExcelPackage();
@@ -190,12 +199,11 @@ namespace Crossovki3
 
             for (int i = 2; i <= MyFilteredList.Count; i++)
             {
-                sheet.Cells[i, 1].Value = MyFilteredList[i - 1].Supplier;
-                sheet.Cells[i, 2].Value = MyFilteredList[i - 1].Brand;
-                sheet.Cells[i, 3].Value = MyFilteredList[i - 1].NumberNice;
-                sheet.Cells[i, 4].Value = MyFilteredList[i - 1].NumberBad;
-                sheet.Cells[i, 5].Value = MyFilteredList[i - 1].PartName;
-
+                sheet.Cells[i, 1].Value = MyFilteredList[i - 2].Supplier;
+                sheet.Cells[i, 2].Value = MyFilteredList[i - 2].Brand;
+                sheet.Cells[i, 3].Value = MyFilteredList[i - 2].NumberNice;
+                sheet.Cells[i, 4].Value = MyFilteredList[i - 2].NumberBad;
+                sheet.Cells[i, 5].Value = MyFilteredList[i - 2].PartName;
             }
 
 
@@ -230,30 +238,91 @@ namespace Crossovki3
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message + "\n" + ex.InnerException, "Что-то пошло не так");
-                
             }
         }
 
 
         private void BOpenFileTecDoc_Click(object sender, EventArgs e)
         {
-            OpenFileUnrec.InitialDirectory = myDesktop;
-            
+            if (WorkingDirectory == null)
+            {
+                MessageBox.Show("Для начала необходимо создать файл Unrec!");
+                return;
+            }
+
+            OpenFileUnrec.InitialDirectory = WorkingDirectory.FullName;
+
             if (OpenFileUnrec.ShowDialog() == DialogResult.OK)
             {
-                string[] selectedFiles = OpenFileUnrec.FileNames;
-                if (selectedFiles.Length < 2)
-                {
-                    MergingClass.MyUnrecFile = OpenFileUnrec.FileName;
-                    LabelCurrentUnrec.Text = MergingClass.MyUnrecFile; 
-                }
-
-                
-                foreach (var fileName in OpenFileUnrec.FileNames)
-                {
-                    
-                }
+                MyTecDocFile = OpenFileUnrec.FileName;
+                LabelCurrentTecDoc.Text = MyTecDocFile;
             }
+        }
+
+
+
+
+
+        // Создание таблицы из файла ТекДок
+        public void CreateTecDocTable()
+        {
+            MyTecDocTable = new List<TecDocRows>();
+            StreamReader readTecDoc = new StreamReader(MyTecDocFile);
+            while (!readTecDoc.EndOfStream)
+            {
+                string[] line = readTecDoc.ReadLine().Split('\t');
+                MyTecDocTable.Add(new TecDocRows
+                {
+                    Brand = line[0],
+                    NumberBad = line[1],
+                    NumberNice = MultiReplace(line[1], false),
+                    OEMBrand = line[2],
+                    OEMNumber = line[3],
+                    OEMPartName = MultiReplace(line[4], true)
+                });
+            }
+        }
+
+        // Множественная замена ненужных символов. Если AllOfThem - то все подряд, если нет - заменяем выбранное на этапе FormSymbols
+        public string MultiReplace(string start, bool allOfThem)
+        {
+
+            if (!allOfThem)
+            {
+                return start
+                .Replace(SharedVariables.Point, "")
+                .Replace(SharedVariables.Semicolon, "")
+                .Replace(SharedVariables.Space, "")
+                .Replace(SharedVariables.Dash, "")
+                .Replace(SharedVariables.Underline, "")
+                .Replace(SharedVariables.Slash, "")
+                .Replace(SharedVariables.Backslash, "")
+                .Replace(SharedVariables.Quotes, "");
+            }
+            else
+            {
+                return start
+                .Replace(".", "")
+                .Replace(",", "")
+                .Replace(" ", "")
+                .Replace("-", "")
+                .Replace("_", "")
+                .Replace("/", "")
+                .Replace("\\", "")
+                .Replace("\"", "");
+            }
+        }
+
+        // Объединение Текдока и Анрека
+        private void BMergeThem_Click(object sender, EventArgs e)
+        {
+
+            if (MyTecDocFile == null)
+            {
+
+                return;
+            }
+            CreateTecDocTable();
         }
     }
 }
