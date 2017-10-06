@@ -11,6 +11,7 @@ namespace Crossovki3
         public string Brand { get; set; }
         public string NumberNice { get; set; }
         public string NumberBad { get; set; }
+        public string TDNumberBad { get; set; }
         public string OEMBrand { get; set; }
         public string OEMNumber { get; set; }
         public string PartName { get; set; }

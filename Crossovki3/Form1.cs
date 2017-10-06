@@ -20,6 +20,7 @@ namespace Crossovki3
         Data_BaseEntities_Unrecognized content = new Data_BaseEntities_Unrecognized();
         public List<UnrecRows> MyList { get; set; }
         public List<UnrecRows> MyFilteredList { get; set; }
+        string timeNow = DateTime.Now.ToString().Replace(":", "-").Replace(".", "_");
         public object DGVSourse { get { return DGTable.DataSource; } set { DGTable.DataSource = value; } }
         public string myDesktop = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
         public DirectoryInfo WorkingDirectory;
@@ -71,6 +72,7 @@ namespace Crossovki3
         private void ConnectToDataBase(string user)
         {
             MyList = new List<UnrecRows>();
+            #region Была проба ADO для одного из сотрудников, но в итоге обошлись без ADO
             //if (user.ToUpper() == "KAZAKOV_K1")
             //{
             //    SqlConnection KirillConnection = new SqlConnection();
@@ -98,6 +100,7 @@ namespace Crossovki3
             //}
             //else
             //{
+#endregion
             var myQuery = from items in content.f_REPORT_Mega_Base_Unrecognized_(null)
                           select items;
             var tempList = myQuery.ToList();
@@ -168,7 +171,6 @@ namespace Crossovki3
 
         private void BGoExcel_Click(object sender, EventArgs e)
         {
-            string timeNow = DateTime.Now.ToString().Replace(":", "-").Replace(".", "_");
             WorkingDirectory = new DirectoryInfo($"{myDesktop}\\MegringCrosses");
             WorkingDirectory.Create();
             string fileName = WorkingDirectory + "\\" + ComboBrands.SelectedItem + " " + timeNow + ".xlsx";
@@ -197,7 +199,7 @@ namespace Crossovki3
             sheet.Cells[1, 4].Value = "NumberBad";
             sheet.Cells[1, 5].Value = "PartName";
 
-            for (int i = 2; i <= MyFilteredList.Count; i++)
+            for (int i = 2; i <= MyFilteredList.Count + 1; i++)
             {
                 sheet.Cells[i, 1].Value = MyFilteredList[i - 2].Supplier;
                 sheet.Cells[i, 2].Value = MyFilteredList[i - 2].Brand;
@@ -206,10 +208,15 @@ namespace Crossovki3
                 sheet.Cells[i, 5].Value = MyFilteredList[i - 2].PartName;
             }
 
-
+            sheet.Cells[1, 1, 1, 5].AutoFilter = true;
             byte[] excelBytes = eP.GetAsByteArray();
             File.WriteAllBytes(fileName, excelBytes);
 
+            OpenExcel(fileName, false);
+        }
+
+        private static void OpenExcel(string fileName, bool uniq)
+        {
             var excel = new Excel.Application();
             try
             {
@@ -227,13 +234,16 @@ namespace Crossovki3
             {
                 Workbook myBook = excel.Workbooks.Open(fileName);
                 Worksheet mySheet = myBook.Worksheets[1];
-                Range myRange = mySheet.Range["C1"].EntireColumn;
-                myRange.FormatConditions.AddUniqueValues();
-                myRange.FormatConditions[myRange.FormatConditions.Count].SetFirstPriority();
-                myRange.FormatConditions[1].DupeUnique = XlDupeUnique.xlDuplicate;
-                myRange.FormatConditions[1].Font.Color = -16752384;
-                myRange.FormatConditions[1].Interior.Color = 13561798;
-                mySheet.Columns["A:E"].AutoFilter();
+
+                if (!uniq)
+                {
+                    Range myRange = mySheet.Range["C1"].EntireColumn;
+                    myRange.FormatConditions.AddUniqueValues();
+                    myRange.FormatConditions[myRange.FormatConditions.Count].SetFirstPriority();
+                    myRange.FormatConditions[1].DupeUnique = XlDupeUnique.xlDuplicate;
+                    myRange.FormatConditions[1].Font.Color = -16752384;
+                    myRange.FormatConditions[1].Interior.Color = 13561798; 
+                }
             }
             catch (Exception ex)
             {
@@ -242,6 +252,12 @@ namespace Crossovki3
         }
 
 
+
+
+
+
+
+        // Выбор файла TecDoc
         private void BOpenFileTecDoc_Click(object sender, EventArgs e)
         {
             if (WorkingDirectory == null)
@@ -259,29 +275,6 @@ namespace Crossovki3
             }
         }
 
-
-
-
-
-        // Создание таблицы из файла ТекДок
-        public void CreateTecDocTable()
-        {
-            MyTecDocTable = new List<TecDocRows>();
-            StreamReader readTecDoc = new StreamReader(MyTecDocFile);
-            while (!readTecDoc.EndOfStream)
-            {
-                string[] line = readTecDoc.ReadLine().Split('\t');
-                MyTecDocTable.Add(new TecDocRows
-                {
-                    Brand = line[0],
-                    NumberBad = line[1],
-                    NumberNice = MultiReplace(line[1], false),
-                    OEMBrand = line[2],
-                    OEMNumber = line[3],
-                    OEMPartName = MultiReplace(line[4], true)
-                });
-            }
-        }
 
         // Множественная замена ненужных символов. Если AllOfThem - то все подряд, если нет - заменяем выбранное на этапе FormSymbols
         public string MultiReplace(string start, bool allOfThem)
@@ -317,12 +310,136 @@ namespace Crossovki3
         private void BMergeThem_Click(object sender, EventArgs e)
         {
 
-            if (MyTecDocFile == null)
+            if (MyTecDocFile == null || MyUnrecFile == null)
             {
-
+                MessageBox.Show("Файл Текдока не выбран или файл Анрека не создан");
                 return;
             }
             CreateTecDocTable();
+            CreateUnrecTable();
+
+            List<ResultTable> resultTable = new List<ResultTable>();
+            ExcelPackage eP = new ExcelPackage();
+            ExcelWorkbook book = eP.Workbook;
+            ExcelWorksheet sheet = book.Worksheets.Add("Лист1");
+            sheet.Cells[1, 1].Value = "Supplier";
+            sheet.Cells[1, 2].Value = "Brand";
+            sheet.Cells[1, 3].Value = "NumberNice";
+            sheet.Cells[1, 4].Value = "UnrecNumberBad";
+            sheet.Cells[1, 5].Value = "TecDocNumberBad";
+            sheet.Cells[1, 6].Value = "OEMBrand";
+            sheet.Cells[1, 7].Value = "OEMNumber";
+            sheet.Cells[1, 8].Value = "PartName";
+            sheet.Cells[1, 9].Value = "OEMPartName";
+
+            int counter = 2;
+            foreach (var rowTD in MyTecDocTable)
+            {
+                foreach (var rowUR in MyFilteredList)
+                {
+                    if (rowUR.NumberNice == rowTD.NumberNice)
+                    {
+                        //byte[] tempBytes = Encoding.Default.GetBytes(rowTD.OEMPartName);
+                        //string OEMpartNameModified = Encoding.GetEncoding(1201).GetString(tempBytes);
+
+                        resultTable.Add(new ResultTable
+                        {
+                            Supplier = rowUR.Supplier,
+                            Brand = rowUR.Brand,
+                            NumberNice = rowUR.NumberNice,
+                            NumberBad = rowUR.NumberBad,
+                            TDNumberBad = rowTD.NumberBad,
+                            OEMBrand = rowTD.OEMBrand,
+                            OEMNumber = rowTD.OEMNumber,
+                            PartName = rowUR.PartName,
+                            OEMPartName = rowTD.OEMPartName
+                        });
+
+                        sheet.Cells[counter, 1].Value = rowUR.Supplier;
+                        sheet.Cells[counter, 2].Value = rowUR.Brand;
+                        sheet.Cells[counter, 3].Value = rowUR.NumberNice;
+                        sheet.Cells[counter, 4].Value = rowUR.NumberBad;
+                        sheet.Cells[counter, 5].Value = rowTD.NumberBad;
+                        sheet.Cells[counter, 6].Value = rowTD.OEMBrand;
+                        sheet.Cells[counter, 7].Value = rowTD.OEMNumber;
+                        sheet.Cells[counter, 8].Value = rowUR.PartName;
+                        sheet.Cells[counter, 9].Value = rowTD.OEMPartName;
+                        counter++;
+                        
+                    }
+                }    
+            }
+
+            sheet.Column(1).Width = 20;
+            sheet.Column(2).Width = 15;
+            sheet.Column(3).Width = 25;
+            sheet.Column(4).Width = 25;
+            sheet.Column(5).Width = 25;
+            sheet.Column(6).Width = 15;
+            sheet.Column(7).Width = 25;
+            sheet.Column(8).Width = 55;
+            sheet.Column(9).Width = 30;
+            sheet.Cells[1, 1, 1, 9].AutoFilter = true;
+
+            string fileName = WorkingDirectory + "\\" + ComboBrands.SelectedItem.ToString() + " Result " + timeNow + ".xlsx";
+            byte[] excelBytes = eP.GetAsByteArray();
+            File.WriteAllBytes(fileName, excelBytes);
+
+            OpenExcel(fileName, true);
+        }
+
+
+        // Создание таблицы из файла ТекДок
+        public void CreateTecDocTable()
+        {
+            MyTecDocTable = new List<TecDocRows>();
+            StreamReader readTecDoc = new StreamReader(MyTecDocFile, Encoding.Default);
+            while (!readTecDoc.EndOfStream)
+            {
+                string[] line = readTecDoc.ReadLine().Split('\t');
+
+                // борьба с кодировкой. закончена :)
+                //byte[] tempBytes = Encoding.Default.GetBytes(line[4]); // преобразуем в читаемый формат
+                //byte[] utf8Bytes = Encoding.Convert(Encoding.Default, Encoding.Unicode, tempBytes);
+                //string OEMpartNameModified = Encoding.Unicode.GetString(utf8Bytes);
+
+                MyTecDocTable.Add(new TecDocRows
+                {
+                    Brand = line[2],
+                    NumberBad = line[3],
+                    NumberNice = MultiReplace(line[3], false),
+                    OEMBrand = line[0],
+                    OEMNumber = line[1],
+                    OEMPartName = MultiReplace(line[4], true)
+                });
+            }
+            readTecDoc.Close();
+        }
+
+        // Получение таблицы из измененного сотрудниками файла Анрек
+        public void CreateUnrecTable()
+        {
+            MyFilteredList = new List<UnrecRows>();
+
+            FileInfo UnrecNewFile = new FileInfo(MyUnrecFile);
+            ExcelPackage eP = new ExcelPackage(UnrecNewFile);
+            ExcelWorkbook book = eP.Workbook;
+            ExcelWorksheet sheet = book.Worksheets["Лист1"];
+            
+
+            int i = 2;
+            while (sheet.Cells[i,1] != null && sheet.Cells[i,1].Value != null)
+            {
+                MyFilteredList.Add(new UnrecRows
+                {
+                    Supplier = sheet.Cells[i, 1].Value.ToString(),
+                    Brand = sheet.Cells[i, 2].Value.ToString(),
+                    NumberNice = sheet.Cells[i, 3].Value.ToString(),
+                    NumberBad = sheet.Cells[i,4].Value.ToString(),
+                    PartName = sheet.Cells[i,5].Value.ToString()
+                });
+                i++;
+            }
         }
     }
 }

@@ -50,7 +50,7 @@
             // BSymbolsForm
             // 
             this.BSymbolsForm.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.BSymbolsForm.Location = new System.Drawing.Point(964, 185);
+            this.BSymbolsForm.Location = new System.Drawing.Point(964, 166);
             this.BSymbolsForm.Name = "BSymbolsForm";
             this.BSymbolsForm.Size = new System.Drawing.Size(297, 41);
             this.BSymbolsForm.TabIndex = 13;
@@ -61,7 +61,7 @@
             // BChooseBrand
             // 
             this.BChooseBrand.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.BChooseBrand.Location = new System.Drawing.Point(964, 138);
+            this.BChooseBrand.Location = new System.Drawing.Point(964, 119);
             this.BChooseBrand.Name = "BChooseBrand";
             this.BChooseBrand.Size = new System.Drawing.Size(297, 41);
             this.BChooseBrand.TabIndex = 12;
@@ -74,7 +74,7 @@
             this.ComboBrands.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.ComboBrands.FormattingEnabled = true;
             this.ComboBrands.IntegralHeight = false;
-            this.ComboBrands.Location = new System.Drawing.Point(964, 111);
+            this.ComboBrands.Location = new System.Drawing.Point(964, 92);
             this.ComboBrands.MaxDropDownItems = 30;
             this.ComboBrands.Name = "ComboBrands";
             this.ComboBrands.Size = new System.Drawing.Size(297, 21);
@@ -104,7 +104,7 @@
             // BRefresh
             // 
             this.BRefresh.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.BRefresh.Location = new System.Drawing.Point(964, 64);
+            this.BRefresh.Location = new System.Drawing.Point(964, 45);
             this.BRefresh.Name = "BRefresh";
             this.BRefresh.Size = new System.Drawing.Size(297, 41);
             this.BRefresh.TabIndex = 8;
@@ -119,15 +119,15 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.DGTable.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.DGTable.Location = new System.Drawing.Point(12, 64);
+            this.DGTable.Location = new System.Drawing.Point(12, 45);
             this.DGTable.Name = "DGTable";
-            this.DGTable.Size = new System.Drawing.Size(935, 522);
+            this.DGTable.Size = new System.Drawing.Size(935, 541);
             this.DGTable.TabIndex = 7;
             // 
             // BGoExcel
             // 
             this.BGoExcel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.BGoExcel.Location = new System.Drawing.Point(964, 232);
+            this.BGoExcel.Location = new System.Drawing.Point(964, 213);
             this.BGoExcel.Name = "BGoExcel";
             this.BGoExcel.Size = new System.Drawing.Size(297, 41);
             this.BGoExcel.TabIndex = 14;
@@ -162,7 +162,7 @@
             // BOpenFileTecDoc
             // 
             this.BOpenFileTecDoc.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.BOpenFileTecDoc.Location = new System.Drawing.Point(964, 279);
+            this.BOpenFileTecDoc.Location = new System.Drawing.Point(964, 260);
             this.BOpenFileTecDoc.Name = "BOpenFileTecDoc";
             this.BOpenFileTecDoc.Size = new System.Drawing.Size(297, 41);
             this.BOpenFileTecDoc.TabIndex = 18;
@@ -198,7 +198,7 @@
             // 
             this.BMergeThem.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.BMergeThem.BackColor = System.Drawing.Color.GreenYellow;
-            this.BMergeThem.Location = new System.Drawing.Point(964, 326);
+            this.BMergeThem.Location = new System.Drawing.Point(964, 307);
             this.BMergeThem.Name = "BMergeThem";
             this.BMergeThem.Size = new System.Drawing.Size(297, 41);
             this.BMergeThem.TabIndex = 21;
