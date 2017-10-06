@@ -22,6 +22,8 @@ namespace Crossovki3
         public List<UnrecRows> MyFilteredList { get; set; }
         public List<TecDocRows> MyTecDocTable { get; set; }
         public object DGVSourse { get { return DGTable.DataSource; } set { DGTable.DataSource = value; } }
+        public string myDesktop = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+        public string WorkingDirectory;
 
         public Form1()
         {
@@ -157,10 +159,15 @@ namespace Crossovki3
             formSymbols.Show();
         }
 
-        private void BTestik_Click(object sender, EventArgs e)
+        private void BGoExcel_Click(object sender, EventArgs e)
         {
             string timeNow = DateTime.Now.ToString().Replace(":", "-").Replace(".", "_");
-            string fileName = @"\\server\out\Отдел Развития\Виктор\" + ComboBrands.SelectedItem + " " + timeNow + ".xlsx";
+            string fileName = myDesktop + "\\" + ComboBrands.SelectedItem + " " + timeNow + ".xlsx";
+
+            // присваиваем статической переменной имя созданного файла и отображаем его в LabelCurrentUnrec
+            MergingClass.MyUnrecFile = fileName;
+            LabelCurrentUnrec.Text = fileName;
+
             ExcelPackage eP = new ExcelPackage();
             ExcelWorkbook book = eP.Workbook;
             ExcelWorksheet sheet = book.Worksheets.Add("Лист1");
@@ -206,15 +213,47 @@ namespace Crossovki3
                 excel = new Excel.Application();
                 excel.Visible = true;
             }
-            Workbook myBook = excel.Workbooks.Open(fileName);
-            Worksheet mySheet = myBook.Worksheets[1];
-            Range myRange = mySheet.Range["C1"].EntireColumn;
-            myRange.FormatConditions.AddUniqueValues();
-            myRange.FormatConditions[myRange.FormatConditions.Count].SetFirstPriority();
-            myRange.FormatConditions[1].DupeUnique = XlDupeUnique.xlDuplicate;
-            myRange.FormatConditions[1].Font.Color = -16752384;
-            myRange.FormatConditions[1].Interior.Color = 13561798;
-            mySheet.Columns["A:E"].AutoFilter();
+
+
+            try
+            {
+                Workbook myBook = excel.Workbooks.Open(fileName);
+                Worksheet mySheet = myBook.Worksheets[1];
+                Range myRange = mySheet.Range["C1"].EntireColumn;
+                myRange.FormatConditions.AddUniqueValues();
+                myRange.FormatConditions[myRange.FormatConditions.Count].SetFirstPriority();
+                myRange.FormatConditions[1].DupeUnique = XlDupeUnique.xlDuplicate;
+                myRange.FormatConditions[1].Font.Color = -16752384;
+                myRange.FormatConditions[1].Interior.Color = 13561798;
+                mySheet.Columns["A:E"].AutoFilter();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message + "\n" + ex.InnerException, "Что-то пошло не так");
+                
+            }
+        }
+
+
+        private void BOpenFileTecDoc_Click(object sender, EventArgs e)
+        {
+            OpenFileUnrec.InitialDirectory = myDesktop;
+            
+            if (OpenFileUnrec.ShowDialog() == DialogResult.OK)
+            {
+                string[] selectedFiles = OpenFileUnrec.FileNames;
+                if (selectedFiles.Length < 2)
+                {
+                    MergingClass.MyUnrecFile = OpenFileUnrec.FileName;
+                    LabelCurrentUnrec.Text = MergingClass.MyUnrecFile; 
+                }
+
+                
+                foreach (var fileName in OpenFileUnrec.FileNames)
+                {
+                    
+                }
+            }
         }
     }
 }

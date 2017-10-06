@@ -74,6 +74,8 @@ namespace Crossovki3
 
             MainForm.DGTable.Refresh();
 
+
+            // окрашивание повторяющихся - не нужно
             //List<string> coloredList = new List<string>();
 
             //for (int i = 0; i < MainForm.DGTable.RowCount; i++)

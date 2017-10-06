@@ -35,16 +35,21 @@
             this.LabelMain = new System.Windows.Forms.Label();
             this.BRefresh = new System.Windows.Forms.Button();
             this.DGTable = new System.Windows.Forms.DataGridView();
-            this.BTestik = new System.Windows.Forms.Button();
+            this.BGoExcel = new System.Windows.Forms.Button();
+            this.OpenFileUnrec = new System.Windows.Forms.OpenFileDialog();
+            this.label1 = new System.Windows.Forms.Label();
+            this.LabelCurrentUnrec = new System.Windows.Forms.Label();
+            this.BOpenFileTecDoc = new System.Windows.Forms.Button();
+            this.OpenFileTecDoc = new System.Windows.Forms.OpenFileDialog();
             ((System.ComponentModel.ISupportInitialize)(this.DGTable)).BeginInit();
             this.SuspendLayout();
             // 
             // BSymbolsForm
             // 
             this.BSymbolsForm.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.BSymbolsForm.Location = new System.Drawing.Point(1019, 157);
+            this.BSymbolsForm.Location = new System.Drawing.Point(964, 157);
             this.BSymbolsForm.Name = "BSymbolsForm";
-            this.BSymbolsForm.Size = new System.Drawing.Size(256, 41);
+            this.BSymbolsForm.Size = new System.Drawing.Size(297, 41);
             this.BSymbolsForm.TabIndex = 13;
             this.BSymbolsForm.Text = "Удалить символы";
             this.BSymbolsForm.UseVisualStyleBackColor = true;
@@ -53,9 +58,9 @@
             // BChooseBrand
             // 
             this.BChooseBrand.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.BChooseBrand.Location = new System.Drawing.Point(1019, 110);
+            this.BChooseBrand.Location = new System.Drawing.Point(964, 110);
             this.BChooseBrand.Name = "BChooseBrand";
-            this.BChooseBrand.Size = new System.Drawing.Size(256, 41);
+            this.BChooseBrand.Size = new System.Drawing.Size(297, 41);
             this.BChooseBrand.TabIndex = 12;
             this.BChooseBrand.Text = "Выбрать брэнд";
             this.BChooseBrand.UseVisualStyleBackColor = true;
@@ -65,9 +70,9 @@
             // 
             this.ComboBrands.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.ComboBrands.FormattingEnabled = true;
-            this.ComboBrands.Location = new System.Drawing.Point(1019, 83);
+            this.ComboBrands.Location = new System.Drawing.Point(964, 83);
             this.ComboBrands.Name = "ComboBrands";
-            this.ComboBrands.Size = new System.Drawing.Size(256, 21);
+            this.ComboBrands.Size = new System.Drawing.Size(297, 21);
             this.ComboBrands.TabIndex = 11;
             // 
             // LAbelCount
@@ -75,7 +80,7 @@
             this.LAbelCount.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.LAbelCount.AutoSize = true;
             this.LAbelCount.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.LAbelCount.Location = new System.Drawing.Point(1015, 566);
+            this.LAbelCount.Location = new System.Drawing.Point(960, 566);
             this.LAbelCount.Name = "LAbelCount";
             this.LAbelCount.Size = new System.Drawing.Size(58, 20);
             this.LAbelCount.TabIndex = 10;
@@ -94,9 +99,9 @@
             // BRefresh
             // 
             this.BRefresh.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.BRefresh.Location = new System.Drawing.Point(1019, 36);
+            this.BRefresh.Location = new System.Drawing.Point(964, 36);
             this.BRefresh.Name = "BRefresh";
-            this.BRefresh.Size = new System.Drawing.Size(256, 41);
+            this.BRefresh.Size = new System.Drawing.Size(297, 41);
             this.BRefresh.TabIndex = 8;
             this.BRefresh.Text = "Обновить";
             this.BRefresh.UseVisualStyleBackColor = true;
@@ -111,26 +116,69 @@
             this.DGTable.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.DGTable.Location = new System.Drawing.Point(12, 36);
             this.DGTable.Name = "DGTable";
-            this.DGTable.Size = new System.Drawing.Size(990, 550);
+            this.DGTable.Size = new System.Drawing.Size(935, 550);
             this.DGTable.TabIndex = 7;
             // 
-            // BTestik
+            // BGoExcel
             // 
-            this.BTestik.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.BTestik.Location = new System.Drawing.Point(1019, 204);
-            this.BTestik.Name = "BTestik";
-            this.BTestik.Size = new System.Drawing.Size(256, 41);
-            this.BTestik.TabIndex = 14;
-            this.BTestik.Text = "ТЕСТ";
-            this.BTestik.UseVisualStyleBackColor = true;
-            this.BTestik.Click += new System.EventHandler(this.BTestik_Click);
+            this.BGoExcel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.BGoExcel.Location = new System.Drawing.Point(964, 204);
+            this.BGoExcel.Name = "BGoExcel";
+            this.BGoExcel.Size = new System.Drawing.Size(297, 41);
+            this.BGoExcel.TabIndex = 14;
+            this.BGoExcel.Text = "Запустить Excel";
+            this.BGoExcel.UseVisualStyleBackColor = true;
+            this.BGoExcel.Click += new System.EventHandler(this.BGoExcel_Click);
+            // 
+            // OpenFileUnrec
+            // 
+            this.OpenFileUnrec.FileName = "openFileDialog1";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label1.Location = new System.Drawing.Point(497, 10);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(96, 16);
+            this.label1.TabIndex = 16;
+            this.label1.Text = "Файл Unrec:";
+            // 
+            // LabelCurrentUnrec
+            // 
+            this.LabelCurrentUnrec.AutoSize = true;
+            this.LabelCurrentUnrec.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.LabelCurrentUnrec.Location = new System.Drawing.Point(599, 10);
+            this.LabelCurrentUnrec.Name = "LabelCurrentUnrec";
+            this.LabelCurrentUnrec.Size = new System.Drawing.Size(78, 16);
+            this.LabelCurrentUnrec.TabIndex = 17;
+            this.LabelCurrentUnrec.Text = "Не выбран";
+            // 
+            // BOpenFileTecDoc
+            // 
+            this.BOpenFileTecDoc.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.BOpenFileTecDoc.Location = new System.Drawing.Point(964, 251);
+            this.BOpenFileTecDoc.Name = "BOpenFileTecDoc";
+            this.BOpenFileTecDoc.Size = new System.Drawing.Size(297, 41);
+            this.BOpenFileTecDoc.TabIndex = 18;
+            this.BOpenFileTecDoc.Text = "Выбрать файл(ы) TecDoc";
+            this.BOpenFileTecDoc.UseVisualStyleBackColor = true;
+            this.BOpenFileTecDoc.Click += new System.EventHandler(this.BOpenFileTecDoc_Click);
+            // 
+            // OpenFileTecDoc
+            // 
+            this.OpenFileTecDoc.FileName = "openFileDialog1";
+            this.OpenFileTecDoc.Multiselect = true;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1328, 600);
-            this.Controls.Add(this.BTestik);
+            this.ClientSize = new System.Drawing.Size(1273, 600);
+            this.Controls.Add(this.BOpenFileTecDoc);
+            this.Controls.Add(this.LabelCurrentUnrec);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.BGoExcel);
             this.Controls.Add(this.BSymbolsForm);
             this.Controls.Add(this.BChooseBrand);
             this.Controls.Add(this.ComboBrands);
@@ -155,7 +203,12 @@
         private System.Windows.Forms.Label LabelMain;
         private System.Windows.Forms.Button BRefresh;
         public System.Windows.Forms.DataGridView DGTable;
-        private System.Windows.Forms.Button BTestik;
+        private System.Windows.Forms.Button BGoExcel;
+        private System.Windows.Forms.OpenFileDialog OpenFileUnrec;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label LabelCurrentUnrec;
+        private System.Windows.Forms.Button BOpenFileTecDoc;
+        private System.Windows.Forms.OpenFileDialog OpenFileTecDoc;
     }
 }
 
