@@ -11,7 +11,7 @@ namespace Crossovki3
 {
     public partial class FormSymbols : Form
     {
-
+        // изначально предполагаем, что символы заменять не хотим
         Form1 MainForm { get; set; }
         string point = "";
         string semicolon = "";
@@ -28,7 +28,7 @@ namespace Crossovki3
             MainForm = mainForm;
         }
 
-
+        // меняем цвет с зеленого на серый и наоборот, по нажатию
         private void ButtonOfSymbols_Click(object sender, EventArgs e)
         {
             Button currentButton = (Button)sender;
@@ -38,6 +38,7 @@ namespace Crossovki3
                 currentButton.BackColor = Color.LawnGreen;
         }
 
+        // в зависимости от цвета каждой кнопки, определяем какие симсолы в конолке с артикулом хотим удалить
         private void BDelSymbols_Click(object sender, EventArgs e)
         {
             if (BPoint.BackColor == Color.LawnGreen)
@@ -57,6 +58,7 @@ namespace Crossovki3
             if (BQuotes.BackColor == Color.LawnGreen)
                 quotes = "\"";
 
+            // обращаемся к публичному свойству главной формы, добавляя в отфильтрованный по бренду список в колонку NumberNice измененный номер детали
             foreach (var row in MainForm.MyFilteredList)
             {
                 string numberNice = row.NumberBad
@@ -73,6 +75,7 @@ namespace Crossovki3
 
             MainForm.DGVRefresh();
 
+            // запоминаем выбор пользователя в свойства публичного статического класса
             SharedVariables.Point = point;
             SharedVariables.Semicolon = semicolon;
             SharedVariables.Space = space;
@@ -82,7 +85,7 @@ namespace Crossovki3
             SharedVariables.Backslash = backslash;
             SharedVariables.Quotes = quotes;
 
-            // окрашивание повторяющихся - не нужно
+            // окрашивание повторяющихся - не нужно, убираем
             //List<string> coloredList = new List<string>();
 
             //for (int i = 0; i < MainForm.DGTable.RowCount; i++)

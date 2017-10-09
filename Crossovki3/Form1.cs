@@ -39,26 +39,38 @@ namespace Crossovki3
             DGTable.Refresh();
         }
 
+        // сединяемся с базой и обновляем таблицу DataGridView
         private void BRefresh_Click(object sender, EventArgs e)
         {
             LabelMain.Text = "Подключение к базе...";
             System.Windows.Forms.Application.DoEvents();
 
-            ConnectToDataBase(Environment.UserName);
+
+            try
+            {
+                ConnectToDataBase(Environment.UserName);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Соединение не удалось");
+                return;
+            }
 
 
 
-            DGTable.DataSource = MyList; // закомментировать, для проверки чистого ADO.NET
+            DGTable.DataSource = MyList;
 
             LAbelCount.Text = "Итого: " + DGTable.RowCount;
 
             LabelMain.Text = "Итоговая таблица:";
 
+            // добавляем в комбобокс уникальные значения брендов
             List<string> uniqueRows = DGTable.Rows.Cast<DataGridViewRow>()
                            .Where(x => x.Cells[1].Value != null)
                            .Select(x => x.Cells[1].Value.ToString())
                            .Distinct()
                            .ToList();
+            
 
             ComboBrands.Items.Clear();
             foreach (var row in uniqueRows)
@@ -69,6 +81,7 @@ namespace Crossovki3
             ComboBrands.Sorted = true;
         }
 
+        // соединяемся с базой и заполняем коллекцию MyList
         private void ConnectToDataBase(string user)
         {
             MyList = new List<UnrecRows>();
@@ -107,10 +120,10 @@ namespace Crossovki3
 
             foreach (var row in tempList)
             {
-                string partName = row.Название;
-                string sup = row.Supplier;
 
-                partName = RecievePartName(partName, sup);
+                string sup = row.Supplier;
+                string partName = RecievePartName(row.Название, sup); // менаем кодировку, если поставщик входит в список неудобных
+
                 MyList.Add(new UnrecRows
                 {
                     Supplier = row.Supplier,
@@ -124,6 +137,7 @@ namespace Crossovki3
 
         }
 
+        // проверка названия поставщика, если совпадает с указанным списком - меняем кодировку
         private static string RecievePartName(string partName, string sup)
         {
             if (sup == "АвтоСпутник_1-2" ||
@@ -139,6 +153,7 @@ namespace Crossovki3
             return partName;
         }
 
+        // подтверждаем выбор бренда в комбобоксе
         private void BChooseBrand_Click(object sender, EventArgs e)
         {
             if (ComboBrands.SelectedItem == null)
@@ -147,7 +162,7 @@ namespace Crossovki3
                 return;
             }
 
-            MyFilteredList = new List<UnrecRows>();
+            MyFilteredList = new List<UnrecRows>(); // получаем новуб коллекцию, с фильтром по бренду
             foreach (var item in MyList)
             {
                 if (item.Brand == ComboBrands.SelectedItem.ToString())
@@ -156,21 +171,29 @@ namespace Crossovki3
                 }
             }
 
-            DGTable.DataSource = MyFilteredList;
+            DGTable.DataSource = MyFilteredList; // меняем источник DataGridView
             DGTable.Refresh();
 
             LAbelCount.Text = "Итого: " + DGTable.RowCount;
 
         }
 
+        // вызываем форму с выбором удаляемых в артикуле символов
         private void BSymbolsForm_Click(object sender, EventArgs e)
         {
             FormSymbols formSymbols = new FormSymbols(this);
             formSymbols.Show();
         }
 
+        // Записываем результат в xlsx файл и выводим его пользователю, чтоб он мог изменить его по своему усмотрению
         private void BGoExcel_Click(object sender, EventArgs e)
         {
+            if (MyFilteredList == null)
+            {
+                MessageBox.Show("Необходимо отфильтровать таблицу по одному конкретному бренду");
+                return;
+            }
+
             WorkingDirectory = new DirectoryInfo($"{myDesktop}\\MegringCrosses");
             WorkingDirectory.Create();
             string fileName = WorkingDirectory + "\\" + ComboBrands.SelectedItem + " " + timeNow + ".xlsx";
@@ -179,11 +202,10 @@ namespace Crossovki3
             MyUnrecFile = fileName;
             LabelCurrentUnrec.Text = fileName;
 
-            ExcelPackage eP = new ExcelPackage();
-            ExcelWorkbook book = eP.Workbook;
-            ExcelWorksheet sheet = book.Worksheets.Add("Лист1");
+            ExcelPackage eP;
+            ExcelWorksheet sheet = GetSheet(out eP);
 
-            // todo создать доп коллекцию с тирешными (или безтирешными) номерами
+
             // todo создать алгоритм для проверки: если есть 2+ безтирешных повторяющихся номера, то удалить строчку либо с пустым названием,
             // todo либо где безтирешный номер = тирешному
 
@@ -209,12 +231,22 @@ namespace Crossovki3
             }
 
             sheet.Cells[1, 1, 1, 5].AutoFilter = true;
-            byte[] excelBytes = eP.GetAsByteArray();
-            File.WriteAllBytes(fileName, excelBytes);
+            //SaveExcel(eP, fileName);
+            eP.SaveAs(new FileInfo(fileName));
 
+            // открываем пользователю ексель файл, помечая повторяющиеся значение в колонке NumberNice
             OpenExcel(fileName, false);
         }
 
+        // получаем доступ к листу и книге ексель.
+        private static ExcelWorksheet GetSheet(out ExcelPackage eP)
+        {
+            eP = new ExcelPackage();
+            ExcelWorkbook book = eP.Workbook;
+            return book.Worksheets.Add("Лист1");
+        }
+
+        // открываем файл непосредственно в Екселе
         private static void OpenExcel(string fileName, bool uniq)
         {
             var excel = new Excel.Application();
@@ -235,7 +267,7 @@ namespace Crossovki3
                 Workbook myBook = excel.Workbooks.Open(fileName);
                 Worksheet mySheet = myBook.Worksheets[1];
 
-                if (!uniq)
+                if (!uniq) // помечаем повторяющиеся значения в колонке с измененным артикулом
                 {
                     Range myRange = mySheet.Range["C1"].EntireColumn;
                     myRange.FormatConditions.AddUniqueValues();
@@ -276,7 +308,7 @@ namespace Crossovki3
         }
 
 
-        // Множественная замена ненужных символов. Если AllOfThem - то все подряд, если нет - заменяем выбранное на этапе FormSymbols
+        // Множественная замена ненужных символов. Если AllOfThem - то все подряд, если нет - заменяем выбранное на этапе вызова FormSymbols
         public string MultiReplace(string start, bool allOfThem)
         {
 
@@ -315,16 +347,16 @@ namespace Crossovki3
                 MessageBox.Show("Файл Текдока не выбран или файл Анрека не создан");
                 return;
             }
-            CreateTecDocTable();
-            CreateUnrecTable();
+            CreateTecDocTable(); // создаем таблицу текдока на основе выбранного пользователем файла txt
+            CreateUnrecTable(); // создаем заново таблицу Анрек на основе измененного и сохраненного файла xlsx.
 
-            List<ResultTable> resultTable = new List<ResultTable>();
-            ExcelPackage eP = new ExcelPackage();
-            ExcelWorkbook book = eP.Workbook;
-            ExcelWorksheet sheet = book.Worksheets.Add("Лист1");
+            List<ResultTable> resultTable = new List<ResultTable>(); // здесь будет результат слияния
+            ExcelPackage eP;
+            // заполняем шапку
+            ExcelWorksheet sheet = GetSheet(out eP);
             sheet.Cells[1, 1].Value = "Supplier";
             sheet.Cells[1, 2].Value = "Brand";
-            sheet.Cells[1, 3].Value = "NumberNice";
+            sheet.Cells[1, 3].Value = "UnrecNumberNice";
             sheet.Cells[1, 4].Value = "UnrecNumberBad";
             sheet.Cells[1, 5].Value = "TecDocNumberBad";
             sheet.Cells[1, 6].Value = "OEMBrand";
@@ -332,16 +364,13 @@ namespace Crossovki3
             sheet.Cells[1, 8].Value = "PartName";
             sheet.Cells[1, 9].Value = "OEMPartName";
 
-            int counter = 2;
+            int counter = 2; // текущая строка в книге Ексель для заполнения
             foreach (var rowTD in MyTecDocTable)
             {
                 foreach (var rowUR in MyFilteredList)
                 {
-                    if (rowUR.NumberNice == rowTD.NumberNice)
+                    if (rowUR.NumberNice == rowTD.NumberNice) // результат будет содержать только такие строки, в которых совпадают NumberNice (измененные артикулы)
                     {
-                        //byte[] tempBytes = Encoding.Default.GetBytes(rowTD.OEMPartName);
-                        //string OEMpartNameModified = Encoding.GetEncoding(1201).GetString(tempBytes);
-
                         resultTable.Add(new ResultTable
                         {
                             Supplier = rowUR.Supplier,
@@ -365,11 +394,10 @@ namespace Crossovki3
                         sheet.Cells[counter, 8].Value = rowUR.PartName;
                         sheet.Cells[counter, 9].Value = rowTD.OEMPartName;
                         counter++;
-                        
                     }
-                }    
+                }
             }
-
+            // наводим красоту
             sheet.Column(1).Width = 20;
             sheet.Column(2).Width = 15;
             sheet.Column(3).Width = 25;
@@ -382,10 +410,17 @@ namespace Crossovki3
             sheet.Cells[1, 1, 1, 9].AutoFilter = true;
 
             string fileName = WorkingDirectory + "\\" + ComboBrands.SelectedItem.ToString() + " Result " + timeNow + ".xlsx";
+            //SaveExcel(eP, fileName);
+            eP.SaveAs(new FileInfo(fileName));
+
+            OpenExcel(fileName, true); // открываем результат пользователю
+        }
+
+        // сохраняем полученную таблицу в файле xlsx
+        private static void SaveExcel(ExcelPackage eP, string fileName)
+        {
             byte[] excelBytes = eP.GetAsByteArray();
             File.WriteAllBytes(fileName, excelBytes);
-
-            OpenExcel(fileName, true);
         }
 
 
@@ -393,7 +428,7 @@ namespace Crossovki3
         public void CreateTecDocTable()
         {
             MyTecDocTable = new List<TecDocRows>();
-            StreamReader readTecDoc = new StreamReader(MyTecDocFile, Encoding.Default);
+            StreamReader readTecDoc = new StreamReader(MyTecDocFile, Encoding.GetEncoding(1251));
             while (!readTecDoc.EndOfStream)
             {
                 string[] line = readTecDoc.ReadLine().Split('\t');
@@ -409,8 +444,8 @@ namespace Crossovki3
                     NumberBad = line[3],
                     NumberNice = MultiReplace(line[3], false),
                     OEMBrand = line[0],
-                    OEMNumber = line[1],
-                    OEMPartName = MultiReplace(line[4], true)
+                    OEMNumber = MultiReplace(line[1], true),
+                    OEMPartName = line[4]
                 });
             }
             readTecDoc.Close();
