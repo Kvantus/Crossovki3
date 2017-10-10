@@ -144,7 +144,8 @@ namespace Crossovki3
                 sup == "АвтоСпутник_1-3" ||
                 sup == "Ренисcанс" ||
                 sup == "Нормавто (Teknorot)" ||
-                sup == "ЛиАрт")
+                sup == "ЛиАрт" ||
+                sup == "Лидер Авто")
             {
                 byte[] tempBytes = Encoding.Default.GetBytes(partName);
                 partName = Encoding.UTF8.GetString(tempBytes);
@@ -427,16 +428,12 @@ namespace Crossovki3
         // Создание таблицы из файла ТекДок
         public void CreateTecDocTable()
         {
+            string separator = ;
             MyTecDocTable = new List<TecDocRows>();
             StreamReader readTecDoc = new StreamReader(MyTecDocFile, Encoding.GetEncoding(1251));
             while (!readTecDoc.EndOfStream)
             {
                 string[] line = readTecDoc.ReadLine().Split('\t');
-
-                // борьба с кодировкой. закончена :)
-                //byte[] tempBytes = Encoding.Default.GetBytes(line[4]); // преобразуем в читаемый формат
-                //byte[] utf8Bytes = Encoding.Convert(Encoding.Default, Encoding.Unicode, tempBytes);
-                //string OEMpartNameModified = Encoding.Unicode.GetString(utf8Bytes);
 
                 MyTecDocTable.Add(new TecDocRows
                 {

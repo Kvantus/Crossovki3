@@ -13,14 +13,14 @@ namespace Crossovki3
     {
         // изначально предполагаем, что символы заменять не хотим
         Form1 MainForm { get; set; }
-        string point = "";
-        string semicolon = "";
-        string space = "";
-        string dash = "";
-        string underline = "";
-        string slash = "";
-        string backslash = "";
-        string quotes = "";
+        string point = "\0";
+        string semicolon = "\0";
+        string space = "\0";
+        string dash = "\0";
+        string underline = "\0";
+        string slash = "\0";
+        string backslash = "\0";
+        string quotes = "\0";
 
         public FormSymbols(Form1 mainForm)
         {
