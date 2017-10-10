@@ -173,6 +173,7 @@
             // OpenFileTecDoc
             // 
             this.OpenFileTecDoc.FileName = "openFileDialog1";
+            this.OpenFileTecDoc.Multiselect = true;
             // 
             // LabelCurrentTecDoc
             // 

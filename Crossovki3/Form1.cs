@@ -26,7 +26,7 @@ namespace Crossovki3
         public DirectoryInfo WorkingDirectory;
 
         public string MyUnrecFile { get; set; }
-        public string MyTecDocFile { get; set; }
+        public string[] MyTecDocFiles { get; set; }
         public List<TecDocRows> MyTecDocTable { get; set; }
 
         public Form1()
@@ -293,18 +293,18 @@ namespace Crossovki3
         // Выбор файла TecDoc
         private void BOpenFileTecDoc_Click(object sender, EventArgs e)
         {
+            
             if (WorkingDirectory == null)
             {
                 MessageBox.Show("Для начала необходимо создать файл Unrec!");
                 return;
             }
 
-            OpenFileUnrec.InitialDirectory = WorkingDirectory.FullName;
+            OpenFileTecDoc.InitialDirectory = WorkingDirectory.FullName;
 
-            if (OpenFileUnrec.ShowDialog() == DialogResult.OK)
+            if (OpenFileTecDoc.ShowDialog() == DialogResult.OK)
             {
-                MyTecDocFile = OpenFileUnrec.FileName;
-                LabelCurrentTecDoc.Text = MyTecDocFile;
+                    MyTecDocFiles = OpenFileTecDoc.FileNames;
             }
         }
 
@@ -343,7 +343,7 @@ namespace Crossovki3
         private void BMergeThem_Click(object sender, EventArgs e)
         {
 
-            if (MyTecDocFile == null || MyUnrecFile == null)
+            if (MyTecDocFiles == null || MyUnrecFile == null)
             {
                 MessageBox.Show("Файл Текдока не выбран или файл Анрека не создан");
                 return;
@@ -428,24 +428,30 @@ namespace Crossovki3
         // Создание таблицы из файла ТекДок
         public void CreateTecDocTable()
         {
-            string separator = ;
+            
+            char separator = '\t';
             MyTecDocTable = new List<TecDocRows>();
-            StreamReader readTecDoc = new StreamReader(MyTecDocFile, Encoding.GetEncoding(1251));
-            while (!readTecDoc.EndOfStream)
-            {
-                string[] line = readTecDoc.ReadLine().Split('\t');
 
-                MyTecDocTable.Add(new TecDocRows
+
+            for (int i = 0; i < MyTecDocFiles.Length; i++)
+            {
+                StreamReader readTecDoc = new StreamReader(MyTecDocFiles[i], Encoding.GetEncoding(1251));
+                while (!readTecDoc.EndOfStream)
                 {
-                    Brand = line[2],
-                    NumberBad = line[3],
-                    NumberNice = MultiReplace(line[3], false),
-                    OEMBrand = line[0],
-                    OEMNumber = MultiReplace(line[1], true),
-                    OEMPartName = line[4]
-                });
+                    string[] line = readTecDoc.ReadLine().Split(separator);
+
+                    MyTecDocTable.Add(new TecDocRows
+                    {
+                        Brand = line[2],
+                        NumberBad = line[3],
+                        NumberNice = MultiReplace(line[3], false),
+                        OEMBrand = line[0],
+                        OEMNumber = MultiReplace(line[1], true),
+                        OEMPartName = line[4]
+                    });
+                }
+                readTecDoc.Close(); 
             }
-            readTecDoc.Close();
         }
 
         // Получение таблицы из измененного сотрудниками файла Анрек
