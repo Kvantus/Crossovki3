@@ -79,7 +79,7 @@
     <Compile Include="f_REPORT_Mega_Base_Unrecognized__Result.cs">
       <DependentUpon>MyCrossModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="SharedVariables.cs" />
+    <Compile Include="Delimiters.cs" />
     <Compile Include="MyCrossModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

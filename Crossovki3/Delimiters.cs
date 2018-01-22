@@ -6,7 +6,7 @@ using System.IO;
 
 namespace Crossovki3
 {
-    public static class SharedVariables
+    public static class Delimiters
     {
         public static string Point { get; set; }
         public static string Semicolon { get; set; }

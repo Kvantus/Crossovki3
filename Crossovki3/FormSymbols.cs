@@ -76,14 +76,14 @@ namespace Crossovki3
             MainForm.DGVRefresh();
 
             // запоминаем выбор пользователя в свойства публичного статического класса
-            SharedVariables.Point = point;
-            SharedVariables.Semicolon = semicolon;
-            SharedVariables.Space = space;
-            SharedVariables.Dash = dash;
-            SharedVariables.Underline = underline;
-            SharedVariables.Slash = slash;
-            SharedVariables.Backslash = backslash;
-            SharedVariables.Quotes = quotes;
+            Delimiters.Point = point;
+            Delimiters.Semicolon = semicolon;
+            Delimiters.Space = space;
+            Delimiters.Dash = dash;
+            Delimiters.Underline = underline;
+            Delimiters.Slash = slash;
+            Delimiters.Backslash = backslash;
+            Delimiters.Quotes = quotes;
 
             // окрашивание повторяющихся - не нужно, убираем
             //List<string> coloredList = new List<string>();

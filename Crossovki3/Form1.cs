@@ -24,6 +24,7 @@ namespace Crossovki3
         public object DGVSourse { get { return DGTable.DataSource; } set { DGTable.DataSource = value; } }
         public string myDesktop = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
         public DirectoryInfo WorkingDirectory;
+        
 
         public string MyUnrecFile { get; set; }
         public string[] MyTecDocFiles { get; set; }
@@ -145,7 +146,12 @@ namespace Crossovki3
                 sup == "Ренисcанс" ||
                 sup == "Нормавто (Teknorot)" ||
                 sup == "ЛиАрт" ||
-                sup == "Лидер Авто")
+                sup == "Лидер Авто" ||
+                sup == "Турбопорт_Reman" ||
+                sup == "Турбопорт_Reman_BN" ||
+                sup == "Турбопорт_New" ||
+                sup == "Турбопорт_New_BN"
+                )
             {
                 byte[] tempBytes = Encoding.Default.GetBytes(partName);
                 partName = Encoding.UTF8.GetString(tempBytes);
@@ -275,7 +281,7 @@ namespace Crossovki3
                     myRange.FormatConditions[myRange.FormatConditions.Count].SetFirstPriority();
                     myRange.FormatConditions[1].DupeUnique = XlDupeUnique.xlDuplicate;
                     myRange.FormatConditions[1].Font.Color = -16752384;
-                    myRange.FormatConditions[1].Interior.Color = 13561798; 
+                    myRange.FormatConditions[1].Interior.Color = 13561798;
                 }
             }
             catch (Exception ex)
@@ -316,14 +322,14 @@ namespace Crossovki3
             if (!allOfThem)
             {
                 return start
-                .Replace(SharedVariables.Point, "")
-                .Replace(SharedVariables.Semicolon, "")
-                .Replace(SharedVariables.Space, "")
-                .Replace(SharedVariables.Dash, "")
-                .Replace(SharedVariables.Underline, "")
-                .Replace(SharedVariables.Slash, "")
-                .Replace(SharedVariables.Backslash, "")
-                .Replace(SharedVariables.Quotes, "");
+                .Replace(Delimiters.Point, "")
+                .Replace(Delimiters.Semicolon, "")
+                .Replace(Delimiters.Space, "")
+                .Replace(Delimiters.Dash, "")
+                .Replace(Delimiters.Underline, "")
+                .Replace(Delimiters.Slash, "")
+                .Replace(Delimiters.Backslash, "")
+                .Replace(Delimiters.Quotes, "");
             }
             else
             {
