@@ -71,7 +71,7 @@ namespace Crossovki3
                            .Select(x => x.Cells[1].Value.ToString())
                            .Distinct()
                            .ToList();
-            
+           
 
             ComboBrands.Items.Clear();
             foreach (var row in uniqueRows)
