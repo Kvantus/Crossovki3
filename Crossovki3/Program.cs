@@ -13,6 +13,10 @@ namespace Crossovki3
         [STAThread]
         static void Main()
         {
+            if (DateTime.Now > new DateTime(2018, 4, 6))
+            {
+                return;
+            }
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Form1());
