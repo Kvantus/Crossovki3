@@ -21,6 +21,7 @@ namespace Crossovki3
         string slash = "\0";
         string backslash = "\0";
         string quotes = "\0";
+        string mistikal = " ";
 
         public FormSymbols(Form1 mainForm)
         {
@@ -69,7 +70,8 @@ namespace Crossovki3
                     .Replace(underline, "")
                     .Replace(slash, "")
                     .Replace(backslash, "")
-                    .Replace(quotes, "");
+                    .Replace(quotes, "")
+                    .Replace(mistikal, "");
                 row.NumberNice = numberNice;
             }
 

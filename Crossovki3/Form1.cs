@@ -71,15 +71,21 @@ namespace Crossovki3
                            .Select(x => x.Cells[1].Value.ToString())
                            .Distinct()
                            .ToList();
-           
 
-            ComboBrands.Items.Clear();
-            foreach (var row in uniqueRows)
+            BrandsChkdList.Items.Clear();
+            foreach (var item in uniqueRows)
             {
-                ComboBrands.Items.Add(row);
+                BrandsChkdList.Items.Add(item);
             }
+            BrandsChkdList.Sorted = true;
 
-            ComboBrands.Sorted = true;
+            ////Вместо комбобокса используем CheckList
+            //ComboBrands.Items.Clear();
+            //foreach (var row in uniqueRows)
+            //{
+            //    ComboBrands.Items.Add(row);
+            //}
+            //ComboBrands.Sorted = true;
         }
 
         // соединяемся с базой и заполняем коллекцию MyList
@@ -163,19 +169,38 @@ namespace Crossovki3
         // подтверждаем выбор бренда в комбобоксе
         private void BChooseBrand_Click(object sender, EventArgs e)
         {
-            if (ComboBrands.SelectedItem == null)
+            //if (ComboBrands.SelectedItem == null)
+            //{
+            //    MessageBox.Show("Не выбранд брэнд");
+            //    return;
+            //}
+
+            if (BrandsChkdList.SelectedItems.Count == 0)
             {
                 MessageBox.Show("Не выбранд брэнд");
                 return;
             }
 
-            MyFilteredList = new List<UnrecRows>(); // получаем новуб коллекцию, с фильтром по бренду
+            MyFilteredList = new List<UnrecRows>(); // получаем новую коллекцию, с фильтром по бренду
+
+            //var selectedBrands = from object brand in BrandsChkdList.SelectedItems
+            //                     select brand.ToString();
+
             foreach (var item in MyList)
             {
-                if (item.Brand == ComboBrands.SelectedItem.ToString())
+                if (BrandsChkdList.CheckedItems.Contains(item.Brand))
                 {
                     MyFilteredList.Add(item);
                 }
+
+                //if (query != null)
+                //{
+                //    MyFilteredList.Add(item);
+                //}
+                //if (item.Brand == ComboBrands.SelectedItem.ToString())
+                //{
+                //    MyFilteredList.Add(item);
+                //}
             }
 
             DGTable.DataSource = MyFilteredList; // меняем источник DataGridView
@@ -197,13 +222,13 @@ namespace Crossovki3
         {
             if (MyFilteredList == null)
             {
-                MessageBox.Show("Необходимо отфильтровать таблицу по одному конкретному бренду");
+                MessageBox.Show("Необходимо отфильтровать таблицу по брендам");
                 return;
             }
 
             WorkingDirectory = new DirectoryInfo($"{myDesktop}\\MegringCrosses");
             WorkingDirectory.Create();
-            string fileName = WorkingDirectory + "\\" + ComboBrands.SelectedItem + " " + timeNow + ".xlsx";
+            string fileName = WorkingDirectory + "\\" /*+ ComboBrands.SelectedItem*/ + " " + timeNow + ".xlsx";
 
             // присваиваем статической переменной имя созданного файла и отображаем его в LabelCurrentUnrec
             MyUnrecFile = fileName;
@@ -318,6 +343,7 @@ namespace Crossovki3
         // Множественная замена ненужных символов. Если AllOfThem - то все подряд, если нет - заменяем выбранное на этапе вызова FormSymbols
         public string MultiReplace(string start, bool allOfThem)
         {
+            string mystikal = " ";
 
             if (!allOfThem)
             {
@@ -329,7 +355,8 @@ namespace Crossovki3
                 .Replace(Delimiters.Underline, "")
                 .Replace(Delimiters.Slash, "")
                 .Replace(Delimiters.Backslash, "")
-                .Replace(Delimiters.Quotes, "");
+                .Replace(Delimiters.Quotes, "")
+                .Replace(mystikal, "");
             }
             else
             {
@@ -341,7 +368,8 @@ namespace Crossovki3
                 .Replace("_", "")
                 .Replace("/", "")
                 .Replace("\\", "")
-                .Replace("\"", "");
+                .Replace("\"", "")
+                .Replace(mystikal, "");
             }
         }
 
@@ -356,8 +384,8 @@ namespace Crossovki3
             }
             CreateTecDocTable(); // создаем таблицу текдока на основе выбранного пользователем файла txt
             CreateUnrecTable(); // создаем заново таблицу Анрек на основе измененного и сохраненного файла xlsx.
-
-            List<ResultTable> resultTable = new List<ResultTable>(); // здесь будет результат слияния
+            
+            //List<ResultTable> resultTable = new List<ResultTable>(); // здесь будет результат слияния
             ExcelPackage eP;
             // заполняем шапку
             ExcelWorksheet sheet = GetSheet(out eP);
@@ -378,18 +406,18 @@ namespace Crossovki3
                 {
                     if (rowUR.NumberNice == rowTD.NumberNice) // результат будет содержать только такие строки, в которых совпадают NumberNice (измененные артикулы)
                     {
-                        resultTable.Add(new ResultTable
-                        {
-                            Supplier = rowUR.Supplier,
-                            Brand = rowUR.Brand,
-                            NumberNice = rowUR.NumberNice,
-                            NumberBad = rowUR.NumberBad,
-                            TDNumberBad = rowTD.NumberBad,
-                            OEMBrand = rowTD.OEMBrand,
-                            OEMNumber = rowTD.OEMNumber,
-                            PartName = rowUR.PartName,
-                            OEMPartName = rowTD.OEMPartName
-                        });
+                        //resultTable.Add(new ResultTable
+                        //{
+                        //    Supplier = rowUR.Supplier,
+                        //    Brand = rowUR.Brand,
+                        //    NumberNice = rowUR.NumberNice,
+                        //    NumberBad = rowUR.NumberBad,
+                        //    TDNumberBad = rowTD.NumberBad,
+                        //    OEMBrand = rowTD.OEMBrand,
+                        //    OEMNumber = rowTD.OEMNumber,
+                        //    PartName = rowUR.PartName,
+                        //    OEMPartName = rowTD.OEMPartName
+                        //});
 
                         sheet.Cells[counter, 1].Value = rowUR.Supplier;
                         sheet.Cells[counter, 2].Value = rowUR.Brand;
@@ -402,6 +430,24 @@ namespace Crossovki3
                         sheet.Cells[counter, 9].Value = rowTD.OEMPartName;
                         counter++;
                     }
+                    //else
+                    //{
+                    //    sheet.Cells[counter, 1].Value = rowUR.Supplier;
+                    //    sheet.Cells[counter, 2].Value = rowUR.Brand;
+                    //    sheet.Cells[counter, 3].Value = rowUR.NumberNice;
+                    //    sheet.Cells[counter, 4].Value = rowUR.NumberBad;
+                    //    sheet.Cells[counter, 8].Value = rowUR.PartName;
+
+                    //    // сделать пустую строчку
+                    //    //resultTable.Add(new ResultTable
+                    //    //{
+                    //    //    Supplier = rowUR.Supplier,
+                    //    //    Brand = rowUR.Brand,
+                    //    //    NumberNice = rowUR.NumberNice,
+                    //    //    NumberBad = rowUR.NumberBad,
+                    //    //    PartName = rowUR.PartName
+                    //    //});
+                    //}
                 }
             }
             // наводим красоту
@@ -416,7 +462,7 @@ namespace Crossovki3
             sheet.Column(9).Width = 30;
             sheet.Cells[1, 1, 1, 9].AutoFilter = true;
 
-            string fileName = WorkingDirectory + "\\" + ComboBrands.SelectedItem.ToString() + " Result " + timeNow + ".xlsx";
+            string fileName = WorkingDirectory + "\\" /*+ ComboBrands.SelectedItem.ToString()*/ + " Result " + timeNow + ".xlsx";
             //SaveExcel(eP, fileName);
             eP.SaveAs(new FileInfo(fileName));
 

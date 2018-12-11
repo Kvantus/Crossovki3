@@ -44,13 +44,14 @@
             this.LabelCurrentTecDoc = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.BMergeThem = new System.Windows.Forms.Button();
+            this.BrandsChkdList = new System.Windows.Forms.CheckedListBox();
             ((System.ComponentModel.ISupportInitialize)(this.DGTable)).BeginInit();
             this.SuspendLayout();
             // 
             // BSymbolsForm
             // 
             this.BSymbolsForm.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.BSymbolsForm.Location = new System.Drawing.Point(964, 166);
+            this.BSymbolsForm.Location = new System.Drawing.Point(953, 166);
             this.BSymbolsForm.Name = "BSymbolsForm";
             this.BSymbolsForm.Size = new System.Drawing.Size(297, 41);
             this.BSymbolsForm.TabIndex = 13;
@@ -61,7 +62,7 @@
             // BChooseBrand
             // 
             this.BChooseBrand.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.BChooseBrand.Location = new System.Drawing.Point(964, 119);
+            this.BChooseBrand.Location = new System.Drawing.Point(953, 119);
             this.BChooseBrand.Name = "BChooseBrand";
             this.BChooseBrand.Size = new System.Drawing.Size(297, 41);
             this.BChooseBrand.TabIndex = 12;
@@ -72,9 +73,10 @@
             // ComboBrands
             // 
             this.ComboBrands.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.ComboBrands.Enabled = false;
             this.ComboBrands.FormattingEnabled = true;
             this.ComboBrands.IntegralHeight = false;
-            this.ComboBrands.Location = new System.Drawing.Point(964, 92);
+            this.ComboBrands.Location = new System.Drawing.Point(953, 92);
             this.ComboBrands.MaxDropDownItems = 30;
             this.ComboBrands.Name = "ComboBrands";
             this.ComboBrands.Size = new System.Drawing.Size(297, 21);
@@ -85,7 +87,7 @@
             this.LAbelCount.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.LAbelCount.AutoSize = true;
             this.LAbelCount.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.LAbelCount.Location = new System.Drawing.Point(960, 566);
+            this.LAbelCount.Location = new System.Drawing.Point(949, 566);
             this.LAbelCount.Name = "LAbelCount";
             this.LAbelCount.Size = new System.Drawing.Size(58, 20);
             this.LAbelCount.TabIndex = 10;
@@ -104,7 +106,7 @@
             // BRefresh
             // 
             this.BRefresh.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.BRefresh.Location = new System.Drawing.Point(964, 45);
+            this.BRefresh.Location = new System.Drawing.Point(953, 45);
             this.BRefresh.Name = "BRefresh";
             this.BRefresh.Size = new System.Drawing.Size(297, 41);
             this.BRefresh.TabIndex = 8;
@@ -115,9 +117,8 @@
             // DGTable
             // 
             this.DGTable.AllowUserToOrderColumns = true;
-            this.DGTable.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.DGTable.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.DGTable.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.DGTable.Location = new System.Drawing.Point(12, 45);
             this.DGTable.Name = "DGTable";
@@ -127,7 +128,7 @@
             // BGoExcel
             // 
             this.BGoExcel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.BGoExcel.Location = new System.Drawing.Point(964, 213);
+            this.BGoExcel.Location = new System.Drawing.Point(953, 213);
             this.BGoExcel.Name = "BGoExcel";
             this.BGoExcel.Size = new System.Drawing.Size(297, 41);
             this.BGoExcel.TabIndex = 14;
@@ -162,7 +163,7 @@
             // BOpenFileTecDoc
             // 
             this.BOpenFileTecDoc.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.BOpenFileTecDoc.Location = new System.Drawing.Point(964, 260);
+            this.BOpenFileTecDoc.Location = new System.Drawing.Point(953, 260);
             this.BOpenFileTecDoc.Name = "BOpenFileTecDoc";
             this.BOpenFileTecDoc.Size = new System.Drawing.Size(297, 41);
             this.BOpenFileTecDoc.TabIndex = 18;
@@ -199,7 +200,7 @@
             // 
             this.BMergeThem.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.BMergeThem.BackColor = System.Drawing.Color.GreenYellow;
-            this.BMergeThem.Location = new System.Drawing.Point(964, 307);
+            this.BMergeThem.Location = new System.Drawing.Point(953, 307);
             this.BMergeThem.Name = "BMergeThem";
             this.BMergeThem.Size = new System.Drawing.Size(297, 41);
             this.BMergeThem.TabIndex = 21;
@@ -207,11 +208,20 @@
             this.BMergeThem.UseVisualStyleBackColor = false;
             this.BMergeThem.Click += new System.EventHandler(this.BMergeThem_Click);
             // 
+            // BrandsChkdList
+            // 
+            this.BrandsChkdList.FormattingEnabled = true;
+            this.BrandsChkdList.Location = new System.Drawing.Point(1257, 45);
+            this.BrandsChkdList.Name = "BrandsChkdList";
+            this.BrandsChkdList.Size = new System.Drawing.Size(335, 544);
+            this.BrandsChkdList.TabIndex = 22;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1273, 600);
+            this.ClientSize = new System.Drawing.Size(1595, 600);
+            this.Controls.Add(this.BrandsChkdList);
             this.Controls.Add(this.BMergeThem);
             this.Controls.Add(this.LabelCurrentTecDoc);
             this.Controls.Add(this.label2);
@@ -252,6 +262,7 @@
         private System.Windows.Forms.Label LabelCurrentTecDoc;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button BMergeThem;
+        private System.Windows.Forms.CheckedListBox BrandsChkdList;
     }
 }
 
